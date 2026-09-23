@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="座號轉盤、轉盤、硬幣、骰子、擲筊、跑團骰子、扭蛋機、樂透、彩球機、爬格子、拉霸機、文字拉霸。">
+<meta name="description" content="RNG Lab. 隨機製造所：座號轉盤、轉盤、硬幣、骰子、擲筊、跑團骰子、扭蛋機、樂透、彩球機、爬格子、拉霸機、文字拉霸。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2714%27 fill=%27%23DF6448%27/%3E%3Cpath d=%27M16 16 L16 2 A14 14 0 0 1 30 16Z%27 fill=%27%23E8A53A%27/%3E%3Cpath d=%27M16 16 L30 16 A14 14 0 0 1 16 30Z%27 fill=%27%234E9F80%27/%3E%3Cpath d=%27M16 16 L16 30 A14 14 0 0 1 2 16Z%27 fill=%27%235A97C4%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%274.5%27 fill=%27%23fff%27/%3E%3C/svg%3E">
-<title>抽籤遊樂場</title>
+<title>RNG Lab. 隨機製造所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Huninn&family=Noto+Sans+TC:wght@400;500;700&display=swap">
@@ -62,7 +62,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .chips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 16px;font-size:14px}
 .chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(164px,1fr));gap:16px}
-.card{position:relative;display:grid;gap:2px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:10px 10px 14px;transition:transform .18s,box-shadow .18s}
+.card{position:relative;display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:2px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:10px 10px 14px;transition:transform .18s,box-shadow .18s}
 .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
 .card .art{display:grid;place-items:center;aspect-ratio:4/3;border-radius:12px;background:color-mix(in oklab,var(--tc) 17%,var(--surface));margin-bottom:8px;color:var(--ink)}
 .card .art svg{width:76px;height:76px;transition:transform .25s}
@@ -76,6 +76,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .wrow .wn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wrow input{padding:4px 8px;text-align:center;font-family:var(--f-num)}
 .wrow .wp{text-align:right;color:var(--muted);font-family:var(--f-num);font-size:13px}
+body{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%2236%22%20viewBox%3D%220%200%2036%2036%22%3E%3Cpath%20d%3D%22M5%203.5%20L5%2027%20Q5%2029%206.8%2027.8%20L12.5%2023%20L17%2031.5%20Q18%2033%2019.6%2032.2%20L22%2031%20Q23.4%2030.2%2022.6%2028.7%20L18.3%2020.6%20L26%2020%20Q28.2%2019.7%2026.6%2018.2%20L7.4%202.4%20Q5%201%205%203.5%20Z%22%20fill%3D%22%23F4A7B9%22%20stroke%3D%22%232A2F36%22%20stroke-width%3D%222.2%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") 5 3,auto}
+button,a,label.tog,.card,[role=radio],.lever,.knob,.hub{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%3E%3Cg%20stroke%3D%22%23fff%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%2220%22%20cy%3D%2227%22%20rx%3D%229.5%22%20ry%3D%228%22%20fill%3D%22%232A2F36%22%2F%3E%3Cellipse%20cx%3D%228.5%22%20cy%3D%2217%22%20rx%3D%224%22%20ry%3D%225%22%20fill%3D%22%232A2F36%22%2F%3E%3Cellipse%20cx%3D%2215.5%22%20cy%3D%229.5%22%20rx%3D%224%22%20ry%3D%225.2%22%20fill%3D%22%232A2F36%22%2F%3E%3Cellipse%20cx%3D%2224.5%22%20cy%3D%229.5%22%20rx%3D%224%22%20ry%3D%225.2%22%20fill%3D%22%232A2F36%22%2F%3E%3Cellipse%20cx%3D%2231.5%22%20cy%3D%2217%22%20rx%3D%224%22%20ry%3D%225%22%20fill%3D%22%232A2F36%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23F4A7B9%22%3E%3Cellipse%20cx%3D%2220%22%20cy%3D%2228%22%20rx%3D%225.5%22%20ry%3D%224.2%22%2F%3E%3Ccircle%20cx%3D%228.5%22%20cy%3D%2217.5%22%20r%3D%221.8%22%2F%3E%3Ccircle%20cx%3D%2215.5%22%20cy%3D%2210%22%20r%3D%221.9%22%2F%3E%3Ccircle%20cx%3D%2224.5%22%20cy%3D%2210%22%20r%3D%221.9%22%2F%3E%3Ccircle%20cx%3D%2231.5%22%20cy%3D%2217.5%22%20r%3D%221.8%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 20 8,pointer}
+button:disabled{cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2236%22%20height%3D%2236%22%20viewBox%3D%220%200%2036%2036%22%3E%3Cpath%20d%3D%22M5%203.5%20L5%2027%20Q5%2029%206.8%2027.8%20L12.5%2023%20L17%2031.5%20Q18%2033%2019.6%2032.2%20L22%2031%20Q23.4%2030.2%2022.6%2028.7%20L18.3%2020.6%20L26%2020%20Q28.2%2019.7%2026.6%2018.2%20L7.4%202.4%20Q5%201%205%203.5%20Z%22%20fill%3D%22%23F4A7B9%22%20stroke%3D%22%232A2F36%22%20stroke-width%3D%222.2%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") 5 3,not-allowed}
+input[type=text],input[type=number],textarea{cursor:text}
+.brand .bn{font-family:var(--f-num);font-weight:600;letter-spacing:.01em}
+.brand .bz{font-family:var(--f-display);font-size:16px;color:var(--muted);margin-left:2px}
+.foot a{color:var(--ink);text-decoration:none;font-weight:500}
+.foot a:hover{text-decoration:underline}
 .card .desc{font-size:13px;color:var(--muted);padding-inline:4px;line-height:1.45}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .chips{margin-top:24px!important}
@@ -289,7 +297,7 @@ textarea{resize:vertical;line-height:1.5}
 <header class="top"><div class="wrapx">
   <button class="brand" id="brand" type="button" aria-label="回到首頁">
     <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#DF6448"/><path d="M16 16 L16 2 A14 14 0 0 1 30 16Z" fill="#E8A53A"/><path d="M16 16 L30 16 A14 14 0 0 1 16 30Z" fill="#4E9F80"/><path d="M16 16 L16 30 A14 14 0 0 1 2 16Z" fill="#5A97C4"/><circle cx="16" cy="16" r="4.5" fill="#fff"/></svg>
-    抽籤遊樂場
+    <span class="bn">RNG Lab.</span><span class="bz">隨機製造所</span>
   </button>
   <div class="sound">
     <button class="icon-btn" id="mute" type="button" aria-label="靜音"></button>
@@ -297,7 +305,7 @@ textarea{resize:vertical;line-height:1.5}
   </div>
 </div></header>
 <main id="view" class="wrapx"></main>
-<footer class="foot wrapx">© 2026 Heylongmaru. All Rights Reserved</footer>
+<footer class="foot wrapx">© 2026 <a href="https://www.youtube.com/channel/UCltqZGFhSMw7h0wMFXiG0Ow" target="_blank" rel="noopener">小小黑開箱 ▸</a> All Rights Reserved</footer>
 <canvas id="fx" aria-hidden="true"></canvas>
 
 <script>
@@ -587,7 +595,7 @@ const DEF = {
 /* ---------- tools ---------- */
 const CATS = { throw: '擲', draw: '抽', spin: '轉', slot: '拉霸' };
 const TOOLS = [
-{ id: 'seat', name: '座號轉盤', en: 'Number Wheel', cat: 'spin', color: '#8C7BC0', isNew: true, desc: '設定號碼範圍，抽座號',
+{ id: 'seat', name: '座號轉盤', en: 'Number Wheel', cat: 'spin', color: '#8C7BC0', isNew: true, desc: '上課抽人回答，抽過的不會再抽到',
   mount(u) {
     const presets = h('<div class="field"><span class="lbl">快速設定</span><div class="presets"><button type="button" data-a="1" data-b="30">1–30</button><button type="button" data-a="1" data-b="40">1–40</button><button type="button" data-a="1" data-b="50">1–50</button><button type="button" data-a="1" data-b="100">1–100</button></div></div>');
     u.settings.append(presets);
@@ -631,7 +639,7 @@ const TOOLS = [
     W.hub.onclick = run;
     u.after = refresh;
   } },
-{ id: 'wheel', name: '轉盤', en: 'Wheel', cat: 'spin', color: '#DF6448', desc: '自己設定選項，可以調權重',
+{ id: 'wheel', name: '轉盤', en: 'Wheel', cat: 'spin', color: '#DF6448', desc: '午餐吃什麼？寫上去轉就知道',
   mount(u) {
     const list = listField(u.settings, { id: 'wheelList', label: '選項（一行一個）', def: DEF.names, rows: 8 });
     const rm = toggle(u.settings, { id: 'wheelRm', label: '抽中後從名單移除', def: false });
@@ -667,7 +675,7 @@ const TOOLS = [
     W.hub.onclick = run;
     u.after = refresh;
   } },
-{ id: 'coin', name: '硬幣', en: 'Coin Flip', cat: 'throw', color: '#E8A53A', ink: '#2A2F36', desc: '擲一到三枚硬幣，看正反面',
+{ id: 'coin', name: '硬幣', en: 'Coin Flip', cat: 'throw', color: '#E8A53A', ink: '#2A2F36', desc: '二選一的時候丟一下',
   mount(u) {
     const box = h('<div class="coins"></div>'); u.stage.append(box);
     let coins = [];
@@ -690,7 +698,7 @@ const TOOLS = [
       u.show(main, sub, 'plain'); u.log(main);
     });
   } },
-{ id: 'dice', name: '骰子', en: 'Dice', cat: 'throw', color: '#5A97C4', desc: '擲一到六顆骰子，看總點數',
+{ id: 'dice', name: '骰子', en: 'Dice', cat: 'throw', color: '#5A97C4', desc: '玩桌遊忘了帶骰子',
   mount(u) {
     const ORI = { 1: [0, 0], 6: [0, 180], 3: [0, -90], 4: [0, 90], 5: [-90, 0], 2: [90, 0] };
     const PIPS = { 1: [5], 2: [1, 9], 3: [1, 5, 9], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 3, 4, 6, 7, 9] };
@@ -717,7 +725,7 @@ const TOOLS = [
       u.log(vals.length === 1 ? `${sum} 點` : `${vals.join('+')} = ${sum}`);
     });
   } },
-{ id: 'bwabwei', name: '擲筊', en: 'Divination Blocks', cat: 'throw', color: '#DF6448', desc: '擲兩個筊杯，看聖筊、笑筊或陰筊',
+{ id: 'bwabwei', name: '擲筊', en: 'Divination Blocks', cat: 'throw', color: '#DF6448', desc: '有事想問神明',
   mount(u) {
     const P = 'M10 54 C 24 4, 136 4, 150 54 C 118 36, 42 36, 10 54 Z';
     const svg = (flat, mirror) => `<svg viewBox="0 0 160 60" aria-hidden="true"><g ${mirror ? 'transform="translate(160 0) scale(-1 1)"' : ''}>${flat
@@ -749,7 +757,7 @@ const TOOLS = [
       u.log((f === 1 ? '聖筊' : f === 2 ? '笑筊' : '陰筊') + (qEl.textContent ? ' ' + qEl.textContent : ''));
     });
   } },
-{ id: 'dnd', name: '跑團骰子', en: 'TRPG Dice', cat: 'throw', color: '#8C7BC0', desc: 'd4 到 d100，可以加值',
+{ id: 'dnd', name: '跑團骰子', en: 'TRPG Dice', cat: 'throw', color: '#8C7BC0', desc: '跑團用的 d20、d100 都在這',
   mount(u) {
     const SIDES = [4, 6, 8, 10, 12, 20, 100];
     const DCOL = { 4: '#E08BA0', 6: '#5A97C4', 8: '#4E9F80', 10: '#D69A2E', 12: '#DF6448', 20: '#8C7BC0', 100: '#3F8C9A' };
@@ -784,7 +792,7 @@ const TOOLS = [
       u.log(`${sum}（${parts}）`);
     });
   } },
-{ id: 'gashapon', name: '扭蛋機', en: 'Gashapon', cat: 'draw', color: '#E08BA0', ink: '#2A2F36', desc: '自己設定扭蛋內容',
+{ id: 'gashapon', name: '扭蛋機', en: 'Gashapon', cat: 'draw', color: '#E08BA0', ink: '#2A2F36', desc: '抽禮物、抽獎品',
   mount(u) {
     const list = listField(u.settings, { id: 'gachaList', label: '扭蛋內容（一行一個）', def: DEF.gacha, rows: 8 });
     const rm = toggle(u.settings, { id: 'gachaRm', label: '抽中後從名單移除', def: false });
@@ -810,7 +818,7 @@ const TOOLS = [
     });
     knob.onclick = run;
   } },
-{ id: 'lotto', name: '樂透', en: 'Lotto', cat: 'draw', color: '#4E9F80', desc: '設定號碼範圍，開出幾顆號碼',
+{ id: 'lotto', name: '樂透', en: 'Lotto', cat: 'draw', color: '#4E9F80', desc: '幫你選一組號碼',
   mount(u) {
     let balls = [], mixing = 0, r = 22, raf = 0;
     const maxN = numField(u.settings, { id: 'lotMax', label: '號碼從 1 到', def: 49, min: 5, max: 99, onchange: () => { if (!u.busy) fill(); } });
@@ -863,7 +871,7 @@ const TOOLS = [
       u.log(sorted.join(' ') + (spn != null ? `　特別號 ${spn}` : ''));
     });
   } },
-{ id: 'garagara', name: '彩球機', en: 'Prize Drum', cat: 'draw', color: '#D6A83A', ink: '#2A2F36', desc: '設定獎項和球數，轉一圈掉一顆',
+{ id: 'garagara', name: '彩球機', en: 'Prize Drum', cat: 'draw', color: '#D6A83A', ink: '#2A2F36', desc: '摸彩用，金球是頭獎',
   mount(u) {
     const TIERS = [['金', '#D6A83A'], ['紅', '#DF6448'], ['藍', '#5A97C4'], ['綠', '#4E9F80'], ['白', '#F1F0EA']];
     const DEFP = [['頭獎', 1], ['二獎', 3], ['三獎', 6], ['四獎', 10], ['參加獎', 30]].map(([name, count]) => ({ name, count }));
@@ -941,7 +949,7 @@ const TOOLS = [
       u.log(`${name}（${sub}）`);
     });
   } },
-{ id: 'ghostleg', name: '爬格子', en: 'Ghost Leg', cat: 'draw', color: '#3F8C9A', desc: '設定參加者和結果，沿著梯子走到底',
+{ id: 'ghostleg', name: '爬格子', en: 'Ghost Leg', cat: 'draw', color: '#3F8C9A', desc: '分配工作、決定誰去買飲料',
   mount(u) {
     u.stage.classList.add('wide');
     const names = listField(u.settings, { id: 'glNames', label: '上面：參加者（最多 12 位）', def: DEF.glNames, rows: 5 });
@@ -1016,7 +1024,7 @@ const TOOLS = [
       u.show('全部揭曉', '', 'win');
     });
   } },
-{ id: 'slot', name: '拉霸機', en: 'Slot Machine', cat: 'slot', color: '#C25A6E', desc: '三個一樣就中獎',
+{ id: 'slot', name: '拉霸機', en: 'Slot Machine', cat: 'slot', color: '#C25A6E', desc: '沒事拉一下，看手氣',
   mount(u) {
     const SYM = [{ k: '7', c: '#DF6448' }, { k: 'BAR', c: '#2A2F36' }, { k: '★', c: '#E0A030' }, { k: '◆', c: '#4A87B8' }, { k: '♥', c: '#DA7890' }, { k: '♣', c: '#3F9476' }];
     const boost = toggle(u.settings, { id: 'slotBoost', label: '派對模式（提高中獎機率）', def: false });
@@ -1044,7 +1052,7 @@ const TOOLS = [
     });
     lever.onclick = run;
   } },
-{ id: 'textslot', name: '文字拉霸', en: 'Text Slot', cat: 'slot', color: '#4E9F80', desc: '每一欄各抽一個，組成一句話',
+{ id: 'textslot', name: '文字拉霸', en: 'Text Slot', cat: 'slot', color: '#4E9F80', desc: '誰＋在哪＋做什麼，湊出好笑的句子',
   mount(u) {
     const cols = [listField(u.settings, { id: 'ts1', label: '第 1 欄', def: DEF.ts1, rows: 4 }), listField(u.settings, { id: 'ts2', label: '第 2 欄', def: DEF.ts2, rows: 4 }), listField(u.settings, { id: 'ts3', label: '第 3 欄（不用可以清空）', def: DEF.ts3, rows: 4 })];
     const m = h('<div class="tslot"><div class="cab" style="--tc:#4E9F80"><div class="cab-top">WORD SLOT</div><div class="reels text"></div></div></div>'); u.stage.append(m);
@@ -1065,10 +1073,10 @@ const view = $('#view');
 let current = null;
 
 function renderHome() {
-  document.title = '抽籤遊樂場';
+  document.title = 'RNG Lab. 隨機製造所';
   const cat = store.get('homeCat', 'all');
   view.innerHTML = `
-    <h1 class="sr">抽籤遊樂場</h1>
+    <h1 class="sr">RNG Lab. 隨機製造所</h1>
     <div class="chips" role="toolbar" aria-label="分類">${[['all', '全部'], ...Object.entries(CATS)].map(([k, l]) => `<button type="button" data-c="${k}" aria-pressed="${k === cat}">${l}</button>`).join('')}</div>
     <div class="grid">${TOOLS.map(t => `<button type="button" class="card" data-id="${t.id}" data-cat="${t.cat}" style="--tc:${t.color}"${cat !== 'all' && cat !== t.cat ? ' hidden' : ''}>
       <span class="art">${ICON[t.id](t.color)}</span>${t.isNew ? '<span class="new">新</span>' : ''}<span class="tag">${CATS[t.cat]}</span>
@@ -1082,7 +1090,7 @@ function renderHome() {
 }
 
 function openTool(t) {
-  document.title = t.name + '｜抽籤遊樂場';
+  document.title = t.name + '｜RNG Lab. 隨機製造所';
   view.innerHTML = `
   <section class="tool" style="--tc:${t.color};--tci:${t.ink || '#fff'}">
     <div class="toolhead"><button class="back" type="button">← 全部玩法</button><div class="tt"><h1>${t.name}</h1><span class="en">${t.en}</span></div></div>
