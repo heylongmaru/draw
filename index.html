@@ -83,12 +83,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 @media (pointer:fine){html.paw,html.paw *{cursor:none!important}html.paw input[type=text],html.paw input[type=number],html.paw textarea{cursor:text!important}}
 #paw{position:fixed;left:0;top:0;width:36px;height:45px;pointer-events:none;z-index:100;opacity:0;transition:opacity .15s;will-change:transform}
 #paw.on{opacity:1}
-#paw .pi{width:36px;height:45px;transform-origin:18px 4px;transform:rotate(-14deg);transition:transform .14s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 2px 3px rgba(0,0,0,.28))}
+#paw .pi{width:36px;height:45px;transform-origin:18px 4px;transform:rotate(-28deg);transition:transform .14s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 2px 3px rgba(0,0,0,.28))}
 #paw svg{display:block}
 #paw .fist{display:none}
 #paw.down .open{display:none}
 #paw.down .fist{display:block}
-#paw.down .pi{transform:rotate(-14deg) scale(.92)}
+#paw.down .pi{transform:rotate(-28deg) scale(.94)}
+.pawprint{position:fixed;left:0;top:0;width:26px;height:26px;pointer-events:none;z-index:99;animation:pawprint .8s ease-out forwards}
+@keyframes pawprint{0%{opacity:.95;transform:translate(var(--x),var(--y)) rotate(-28deg) scale(.5)}25%{opacity:.95;transform:translate(var(--x),var(--y)) rotate(-28deg) scale(1)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(-28deg) scale(1)}}
 .card .desc{font-size:13px;color:var(--muted);padding-inline:4px;line-height:1.45}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .chips{margin-top:24px!important}
@@ -312,7 +314,7 @@ textarea{resize:vertical;line-height:1.5}
 <main id="view" class="wrapx"></main>
 <footer class="foot wrapx">© 2026 <a href="https://www.youtube.com/channel/UCltqZGFhSMw7h0wMFXiG0Ow" target="_blank" rel="noopener">小小黑開箱 ▸</a> × Heylongmaru. All Rights Reserved</footer>
 <canvas id="fx" aria-hidden="true"></canvas>
-<div id="paw" aria-hidden="true"><div class="pi"><svg class="open" viewBox="0 0 40 50" width="36" height="45"><path d="M6 52 V18 a14 14 0 0 1 28 0 V52 Z" fill="#26262B" stroke="#FFFFFF" stroke-width="2.4"/><g fill="#F7A8BE"><ellipse cx="11.2" cy="17.6" rx="2.8" ry="3.5" transform="rotate(-22 11.2 17.6)"/><ellipse cx="16.8" cy="11.8" rx="2.9" ry="3.6" transform="rotate(-8 16.8 11.8)"/><ellipse cx="23.2" cy="11.8" rx="2.9" ry="3.6" transform="rotate(8 23.2 11.8)"/><ellipse cx="28.8" cy="17.6" rx="2.8" ry="3.5" transform="rotate(22 28.8 17.6)"/><path d="M20 20.5 c4.2 0 7.8 3.6 7.8 7 c0 2.6-2 3.9-3.8 3.4 c-1.2 1-2.6 1.4-4 1.4 s-2.8-.4-4-1.4 c-1.8.5-3.8-.8-3.8-3.4 c0-3.4 3.6-7 7.8-7z"/></g><path d="M16.5 39 h7" stroke="#55555D" stroke-width="1.6" stroke-linecap="round"/></svg><svg class="fist" viewBox="0 0 40 50" width="36" height="45"><path d="M6 52 V22 c0-5 3-8 6.5-8.5 c1.5-2 3.5-2.8 5-2.2 c1.2-1 3.8-1 5 0 c1.5-.6 3.5.2 5 2.2 C31 14 34 17 34 22 V52 Z" fill="#26262B" stroke="#FFFFFF" stroke-width="2.4"/><g stroke="#55555D" stroke-width="1.6" stroke-linecap="round" fill="none"><path d="M13.2 14.5 q.6 3 .1 6"/><path d="M20 12.3 v6.5"/><path d="M26.8 14.5 q-.6 3 -.1 6"/><path d="M16.5 39 h7"/></g><ellipse cx="20" cy="27.5" rx="3.2" ry="1.6" fill="#F7A8BE" opacity=".9"/></svg></div></div>
+<div id="paw" aria-hidden="true"><div class="pi"><svg class="open" viewBox="0 0 40 50" width="36" height="45"><path d="M6 52 V18 a14 14 0 0 1 28 0 V52 Z" fill="#26262B" stroke="#FFFFFF" stroke-width="2.4"/><g fill="#F7A8BE"><ellipse cx="11.2" cy="17.6" rx="2.8" ry="3.5" transform="rotate(-22 11.2 17.6)"/><ellipse cx="16.8" cy="11.8" rx="2.9" ry="3.6" transform="rotate(-8 16.8 11.8)"/><ellipse cx="23.2" cy="11.8" rx="2.9" ry="3.6" transform="rotate(8 23.2 11.8)"/><ellipse cx="28.8" cy="17.6" rx="2.8" ry="3.5" transform="rotate(22 28.8 17.6)"/><path d="M20 20.5 c4.2 0 7.8 3.6 7.8 7 c0 2.6-2 3.9-3.8 3.4 c-1.2 1-2.6 1.4-4 1.4 s-2.8-.4-4-1.4 c-1.8.5-3.8-.8-3.8-3.4 c0-3.4 3.6-7 7.8-7z"/></g><path d="M16.5 39 h7" stroke="#55555D" stroke-width="1.6" stroke-linecap="round"/></svg><svg class="fist" viewBox="0 0 40 50" width="36" height="45"><path d="M6 52 V24 c0-6 2.5-9.5 6-10.2 c1.4-2.2 3.4-3 5.2-2.4 c1.4-1 4.2-1 5.6 0 c1.8-.6 3.8.2 5.2 2.4 C31.5 14.5 34 18 34 24 V52 Z" fill="#26262B" stroke="#FFFFFF" stroke-width="2.4"/><g fill="#F7A8BE"><ellipse cx="11.8" cy="19.3" rx="2.7" ry="1.9"/><ellipse cx="17.2" cy="15.8" rx="2.8" ry="1.9"/><ellipse cx="22.8" cy="15.8" rx="2.8" ry="1.9"/><ellipse cx="28.2" cy="19.3" rx="2.7" ry="1.9"/><path transform="translate(0 2)" d="M20 20.5 c4.2 0 7.8 3.6 7.8 7 c0 2.6-2 3.9-3.8 3.4 c-1.2 1-2.6 1.4-4 1.4 s-2.8-.4-4-1.4 c-1.8.5-3.8-.8-3.8-3.4 c0-3.4 3.6-7 7.8-7z"/></g><path d="M16.5 40 h7" stroke="#55555D" stroke-width="1.6" stroke-linecap="round"/></svg></div></div>
 
 <script>
 (() => {
@@ -1179,7 +1181,14 @@ if (matchMedia('(pointer:fine)').matches) {
     paw.classList.toggle('on', !typing);
   }, { passive: true });
   addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') paw.classList.add('down'); });
-  addEventListener('pointerup', () => paw.classList.remove('down'));
+  const STAMP = '<svg viewBox="0 0 40 40" width="26" height="26"><g fill="#F7A8BE"><ellipse cx="9" cy="14" rx="3.6" ry="4.4" transform="rotate(-22 9 14)"/><ellipse cx="16" cy="7.5" rx="3.7" ry="4.6" transform="rotate(-8 16 7.5)"/><ellipse cx="24" cy="7.5" rx="3.7" ry="4.6" transform="rotate(8 24 7.5)"/><ellipse cx="31" cy="14" rx="3.6" ry="4.4" transform="rotate(22 31 14)"/><path d="M20 17 c5.4 0 10 4.6 10 9 c0 3.4-2.6 5-4.9 4.4 c-1.6 1.3-3.3 1.8-5.1 1.8 s-3.5-.5-5.1-1.8 c-2.3.6-4.9-1-4.9-4.4 c0-4.4 4.6-9 10-9z"/></g></svg>';
+  addEventListener('pointerup', e => {
+    paw.classList.remove('down');
+    if (e.pointerType !== 'mouse' || reduced) return;
+    const d = document.createElement('div'); d.className = 'pawprint'; d.innerHTML = STAMP;
+    d.style.setProperty('--x', (e.clientX - 13) + 'px'); d.style.setProperty('--y', (e.clientY - 13) + 'px');
+    document.body.append(d); setTimeout(() => d.remove(), 850);
+  });
   document.addEventListener('mouseout', e => { if (!e.relatedTarget) paw.classList.remove('on', 'down'); });
   addEventListener('blur', () => paw.classList.remove('on', 'down'));
 }
