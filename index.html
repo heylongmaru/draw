@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="12 種抽籤玩法：座號轉盤、轉盤、硬幣、骰子、擲筊、跑團骰、扭蛋機、樂透、彩球機、爬格子、拉霸機、文字拉霸，全部有音效。">
+<meta name="description" content="座號轉盤、轉盤、硬幣、骰子、擲筊、跑團骰子、扭蛋機、樂透、彩球機、爬格子、拉霸機、文字拉霸。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2714%27 fill=%27%23DF6448%27/%3E%3Cpath d=%27M16 16 L16 2 A14 14 0 0 1 30 16Z%27 fill=%27%23E8A53A%27/%3E%3Cpath d=%27M16 16 L30 16 A14 14 0 0 1 16 30Z%27 fill=%27%234E9F80%27/%3E%3Cpath d=%27M16 16 L16 30 A14 14 0 0 1 2 16Z%27 fill=%27%235A97C4%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%274.5%27 fill=%27%23fff%27/%3E%3C/svg%3E">
 <title>抽籤遊樂場</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,7 +71,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .card .en{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-inline:4px}
 .card .tag{position:absolute;top:16px;right:16px;font-size:11px;background:var(--surface);border-radius:999px;padding:1px 8px;color:var(--muted)}
 .card .new{position:absolute;top:16px;left:16px;font-size:11px;background:var(--shu);color:#fff;border-radius:999px;padding:1px 8px}
-.foot{margin-top:28px;color:var(--muted);font-size:13px}
+.wlist{display:grid;gap:5px;max-height:320px;overflow:auto}
+.wrow{display:grid;grid-template-columns:minmax(0,1fr) 64px 42px;gap:8px;align-items:center;font-size:14px}
+.wrow .wn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrow input{padding:4px 8px;text-align:center;font-family:var(--f-num)}
+.wrow .wp{text-align:right;color:var(--muted);font-family:var(--f-num);font-size:13px}
+.card .desc{font-size:13px;color:var(--muted);padding-inline:4px;line-height:1.45}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.chips{margin-top:24px!important}
+.foot{margin-top:40px;padding-block:20px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;text-align:center;letter-spacing:.02em}
 
 /* tool view */
 .toolhead{display:flex;align-items:center;gap:14px;padding-block:20px 16px;flex-wrap:wrap}
@@ -289,6 +297,7 @@ textarea{resize:vertical;line-height:1.5}
   </div>
 </div></header>
 <main id="view" class="wrapx"></main>
+<footer class="foot wrapx">© 2026 Heylongmaru. All Rights Reserved</footer>
 <canvas id="fx" aria-hidden="true"></canvas>
 
 <script>
@@ -472,7 +481,8 @@ function makeWheel(u, opts = {}) {
   const wrap = h('<div class="wheel-wrap"><canvas></canvas><span class="pointer" aria-hidden="true"></span><button class="hub" type="button" aria-label="轉動轉盤">GO</button></div>');
   u.stage.append(wrap);
   const cv = wrap.querySelector('canvas'), ctx = cv.getContext('2d'), ptr = wrap.querySelector('.pointer');
-  let rot = 0, items = [], S = 0;
+  let rot = 0, items = [], S = 0, st0 = [], sz = [];
+  const layout = ws => { const n = items.length, w = items.map((_, i) => ws && ws[i] > 0 ? ws[i] : (ws ? 0 : 1)), tot = w.reduce((a, b) => a + b, 0) || 1; let acc = 0; st0 = []; sz = []; for (let i = 0; i < n; i++) { st0.push(acc); sz.push(w[i] / tot * TAU); acc += w[i] / tot * TAU; } };
   const color = opts.color || ((i, n) => { let c = i % PAL.length; if (n > 1 && i === n - 1 && c === 0) c = 2; return PAL[c]; });
   function size() { const d = devicePixelRatio || 1; S = wrap.clientWidth; if (!S) return; cv.width = S * d; cv.height = S * d; ctx.setTransform(d, 0, 0, d, 0, 0); draw(); }
   function draw() {
@@ -480,9 +490,9 @@ function makeWheel(u, opts = {}) {
     ctx.clearRect(0, 0, S, S);
     ctx.beginPath(); ctx.arc(c, c, R + 8, 0, TAU); ctx.fillStyle = css('--ink'); ctx.fill();
     if (!n) { ctx.beginPath(); ctx.arc(c, c, R, 0, TAU); ctx.fillStyle = css('--surface2'); ctx.fill(); return; }
-    const a = TAU / n, fs = Math.max(9, Math.min(opts.maxFont || 22, R * .72 * a * .62));
     for (let i = 0; i < n; i++) {
-      const s = -Math.PI / 2 + rot + i * a;
+      const a = sz[i], s = -Math.PI / 2 + rot + st0[i], fs = Math.max(9, Math.min(opts.maxFont || 22, R * .72 * a * .62));
+      if (a <= 0) continue;
       ctx.beginPath(); ctx.moveTo(c, c); ctx.arc(c, c, R, s, s + a); ctx.closePath();
       const col = color(i, n); ctx.fillStyle = col; ctx.fill();
       if (n > 1) { ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 1.2; ctx.stroke(); }
@@ -494,18 +504,17 @@ function makeWheel(u, opts = {}) {
       if (ctx.measureText(t).width > maxW) { while (t.length > 1 && ctx.measureText(t + '…').width > maxW) t = t.slice(0, -1); t += '…'; }
       ctx.fillText(t, R - 12, 1); ctx.restore();
     }
-    if (n <= 60) for (let i = 0; i < n; i++) { const s = -Math.PI / 2 + rot + i * a; ctx.beginPath(); ctx.arc(c + Math.cos(s) * (R + 3), c + Math.sin(s) * (R + 3), 2.6, 0, TAU); ctx.fillStyle = '#F4F1E6'; ctx.fill(); }
+    if (n <= 60) for (let i = 0; i < n; i++) { const s = -Math.PI / 2 + rot + st0[i]; ctx.beginPath(); ctx.arc(c + Math.cos(s) * (R + 3), c + Math.sin(s) * (R + 3), 2.6, 0, TAU); ctx.fillStyle = '#F4F1E6'; ctx.fill(); }
   }
   const ro = new ResizeObserver(size); ro.observe(wrap); u.cleanups.push(() => ro.disconnect());
   if (document.fonts) document.fonts.ready.then(draw);
-  const idxAt = r => { const n = items.length, a = TAU / n; return Math.floor((((-r) % TAU) + TAU) % TAU / a) % n; };
+  const idxAt = r => { const p = (((-r) % TAU) + TAU) % TAU; for (let i = 0; i < items.length; i++) if (sz[i] > 0 && p >= st0[i] && p < st0[i] + sz[i]) return i; return items.length - 1; };
   return {
     hub: wrap.querySelector('.hub'),
-    set(arr) { items = arr; draw(); },
+    set(arr, ws) { items = arr; layout(ws); draw(); },
     spin(k) {
       return new Promise(res => {
-        const n = items.length, a = TAU / n;
-        const base = -(k + .12 + .76 * rndf()) * a;
+        const base = -(st0[k] + sz[k] * (.12 + .76 * rndf()));
         const min = rot + TAU * (5 + rnd(3));
         const fin = base + TAU * Math.ceil((min - base) / TAU);
         const st = rot, dur = reduced ? 700 : 4600 + rnd(1400), t0 = performance.now();
@@ -578,7 +587,7 @@ const DEF = {
 /* ---------- tools ---------- */
 const CATS = { throw: '擲', draw: '抽', spin: '轉', slot: '拉霸' };
 const TOOLS = [
-{ id: 'seat', name: '座號轉盤', en: 'Number Wheel', cat: 'spin', color: '#8C7BC0', isNew: true, hint: '設定從幾號到幾號，按 GO 或空白鍵',
+{ id: 'seat', name: '座號轉盤', en: 'Number Wheel', cat: 'spin', color: '#8C7BC0', isNew: true, desc: '設定號碼範圍，抽座號',
   mount(u) {
     const presets = h('<div class="field"><span class="lbl">快速設定</span><div class="presets"><button type="button" data-a="1" data-b="30">1–30</button><button type="button" data-a="1" data-b="40">1–40</button><button type="button" data-a="1" data-b="50">1–50</button><button type="button" data-a="1" data-b="100">1–100</button></div></div>');
     u.settings.append(presets);
@@ -591,7 +600,7 @@ const TOOLS = [
     const ex = toggle(u.settings, { id: 'seatEx', label: '抽過的號碼不再出現', def: true, onchange: refresh });
     const drawnBox = h('<div class="field"><span class="lbl">已抽出<span class="cnt" id="seatCnt"></span></span><div class="drawn"></div></div>');
     u.settings.append(drawnBox);
-    sbtn(u.settings, '清空已抽號碼，重新開始', () => { if (u.busy) return; drawn = []; save(); refresh(); u.msg('已清空，號碼全部回到轉盤上'); });
+    sbtn(u.settings, '清空已抽號碼，重新開始', () => { if (u.busy) return; drawn = []; save(); refresh(); u.msg('已清空'); });
     let drawn = store.get('seatDrawn', []);
     const save = () => store.set('seatDrawn', drawn);
     const W = makeWheel(u, { numeric: true, maxFont: 26,
@@ -622,21 +631,43 @@ const TOOLS = [
     W.hub.onclick = run;
     u.after = refresh;
   } },
-{ id: 'wheel', name: '轉盤', en: 'Wheel', cat: 'spin', color: '#DF6448', hint: '按 GO 或空白鍵轉動',
+{ id: 'wheel', name: '轉盤', en: 'Wheel', cat: 'spin', color: '#DF6448', desc: '自己設定選項，可以調權重',
   mount(u) {
     const list = listField(u.settings, { id: 'wheelList', label: '選項（一行一個）', def: DEF.names, rows: 8 });
     const rm = toggle(u.settings, { id: 'wheelRm', label: '抽中後從名單移除', def: false });
-    const W = makeWheel(u); W.set(list.get());
-    list.onchange = () => { if (!u.busy) W.set(list.get()); };
+    const useW = toggle(u.settings, { id: 'wheelUseW', label: '設定權重', def: false, onchange: () => refresh() });
+    const wbox = h('<div class="field"><span class="lbl">權重（數字越大越容易抽中）</span><div class="wlist"></div></div>'); u.settings.append(wbox);
+    let weights = store.get('wheelWeights', {});
+    const wOf = name => { const v = weights[name]; return Number.isFinite(v) ? v : 1; };
+    const W = makeWheel(u);
+    function current() { const items = list.get(); return { items, ws: useW.get() ? items.map(wOf) : items.map(() => 1) }; }
+    function paintW() {
+      wbox.hidden = !useW.get(); if (!useW.get()) return;
+      const { items, ws } = current(), tot = ws.reduce((x, y) => x + y, 0) || 1;
+      const wl = wbox.querySelector('.wlist');
+      wl.innerHTML = items.map((it, i) => `<div class="wrow"><span class="wn">${esc(it)}</span><input type="number" id="ww-${i}" min="0" max="100" step="1" value="${ws[i]}" aria-label="${esc(it)} 的權重"><span class="wp">${Math.round(ws[i] / tot * 100)}%</span></div>`).join('');
+      wl.querySelectorAll('input').forEach((inp, i) => inp.addEventListener('change', () => {
+        const v = Math.max(0, Math.min(100, Math.round(+inp.value) || 0)); inp.value = v;
+        weights[items[i]] = v; store.set('wheelWeights', weights); refresh();
+      }));
+    }
+    function refresh() { if (u.busy) return; const { items, ws } = current(); W.set(items, ws); paintW(); }
+    refresh();
+    list.onchange = refresh;
     const run = u.go('轉動', async () => {
-      const items = list.get(); if (items.length < 2) { u.msg('至少要兩個選項才能轉'); return; }
-      W.set(items); const k = rnd(items.length); await W.spin(k);
-      u.show(items[k], '轉到了！', 'win'); u.log(items[k]);
-      if (rm.get()) { await sleep(1200); const arr = items.slice(); arr.splice(k, 1); list.set(arr); W.set(arr); }
+      const { items, ws } = current(); const tot = ws.reduce((x, y) => x + y, 0);
+      if (items.filter((_, i) => ws[i] > 0).length < 2) { u.msg('至少要兩個權重大於 0 的選項才能轉'); return; }
+      W.set(items, ws);
+      let x = rndf() * tot, k = 0; while (k < items.length - 1 && (ws[k] <= 0 || x >= ws[k])) { x -= ws[k]; k++; }
+      while (ws[k] <= 0 && k > 0) k--;
+      await W.spin(k);
+      u.show(items[k], '', 'win'); u.log(items[k]);
+      if (rm.get()) { await sleep(1200); const arr = items.slice(); arr.splice(k, 1); list.set(arr); }
     });
     W.hub.onclick = run;
+    u.after = refresh;
   } },
-{ id: 'coin', name: '硬幣', en: 'Coin Flip', cat: 'throw', color: '#E8A53A', ink: '#2A2F36', hint: '正面還是反面？',
+{ id: 'coin', name: '硬幣', en: 'Coin Flip', cat: 'throw', color: '#E8A53A', ink: '#2A2F36', desc: '擲一到三枚硬幣，看正反面',
   mount(u) {
     const box = h('<div class="coins"></div>'); u.stage.append(box);
     let coins = [];
@@ -659,7 +690,7 @@ const TOOLS = [
       u.show(main, sub, 'plain'); u.log(main);
     });
   } },
-{ id: 'dice', name: '骰子', en: 'Dice', cat: 'throw', color: '#5A97C4', hint: '一次最多擲 6 顆',
+{ id: 'dice', name: '骰子', en: 'Dice', cat: 'throw', color: '#5A97C4', desc: '擲一到六顆骰子，看總點數',
   mount(u) {
     const ORI = { 1: [0, 0], 6: [0, 180], 3: [0, -90], 4: [0, 90], 5: [-90, 0], 2: [90, 0] };
     const PIPS = { 1: [5], 2: [1, 9], 3: [1, 5, 9], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 3, 4, 6, 7, 9] };
@@ -686,7 +717,7 @@ const TOOLS = [
       u.log(vals.length === 1 ? `${sum} 點` : `${vals.join('+')} = ${sum}`);
     });
   } },
-{ id: 'bwabwei', name: '擲筊', en: 'Divination Blocks', cat: 'throw', color: '#DF6448', hint: '一平一凸是聖筊',
+{ id: 'bwabwei', name: '擲筊', en: 'Divination Blocks', cat: 'throw', color: '#DF6448', desc: '擲兩個筊杯，看聖筊、笑筊或陰筊',
   mount(u) {
     const P = 'M10 54 C 24 4, 136 4, 150 54 C 118 36, 42 36, 10 54 Z';
     const svg = (flat, mirror) => `<svg viewBox="0 0 160 60" aria-hidden="true"><g ${mirror ? 'transform="translate(160 0) scale(-1 1)"' : ''}>${flat
@@ -711,14 +742,14 @@ const TOOLS = [
       Sfx.clack(1); await sleep(90); Sfx.clack(1.15); await sleep(130); Sfx.clack(.9); await sleep(260);
       const f = res[0] + res[1];
       if (streak >= 3) streak = 0;
-      if (f === 1) { streak++; if (streak >= 3) u.show('聖筊', '連續三個聖筊，神明很確定！', 'big'); else u.show('聖筊', `神明同意 · 連續 ${streak} 個聖筊`, 'win'); }
-      else if (f === 2) { streak = 0; u.show('笑筊', '神明笑而不答，換個問法再問一次', 'plain'); }
-      else { streak = 0; u.show('陰筊', '神明不同意', 'lose'); }
+      if (f === 1) { streak++; if (streak >= 3) u.show('聖筊', '連續三個聖筊', 'big'); else u.show('聖筊', `連續 ${streak} 個聖筊`, 'win'); }
+      else if (f === 2) { streak = 0; u.show('笑筊', '笑而不答', 'plain'); }
+      else { streak = 0; u.show('陰筊', '', 'lose'); }
       stEl.textContent = streak ? '●'.repeat(Math.min(streak, 3)) + '○'.repeat(Math.max(0, 3 - streak)) + `　連續聖筊 ${streak}` : '';
       u.log((f === 1 ? '聖筊' : f === 2 ? '笑筊' : '陰筊') + (qEl.textContent ? ' ' + qEl.textContent : ''));
     });
   } },
-{ id: 'dnd', name: '跑團骰子', en: 'TRPG Dice', cat: 'throw', color: '#8C7BC0', hint: '在右邊組合 d4 到 d100',
+{ id: 'dnd', name: '跑團骰子', en: 'TRPG Dice', cat: 'throw', color: '#8C7BC0', desc: 'd4 到 d100，可以加值',
   mount(u) {
     const SIDES = [4, 6, 8, 10, 12, 20, 100];
     const DCOL = { 4: '#E08BA0', 6: '#5A97C4', 8: '#4E9F80', 10: '#D69A2E', 12: '#DF6448', 20: '#8C7BC0', 100: '#3F8C9A' };
@@ -753,7 +784,7 @@ const TOOLS = [
       u.log(`${sum}（${parts}）`);
     });
   } },
-{ id: 'gashapon', name: '扭蛋機', en: 'Gashapon', cat: 'draw', color: '#E08BA0', ink: '#2A2F36', hint: '轉一下旋鈕，扭一顆出來',
+{ id: 'gashapon', name: '扭蛋機', en: 'Gashapon', cat: 'draw', color: '#E08BA0', ink: '#2A2F36', desc: '自己設定扭蛋內容',
   mount(u) {
     const list = listField(u.settings, { id: 'gachaList', label: '扭蛋內容（一行一個）', def: DEF.gacha, rows: 8 });
     const rm = toggle(u.settings, { id: 'gachaRm', label: '抽中後從名單移除', def: false });
@@ -774,18 +805,18 @@ const TOOLS = [
       out = h(`<div class="capout" style="--c:${col}"><div class="half t"></div><div class="half b"></div><div class="paper">${esc(pick)}</div></div>`); g.append(out);
       Sfx.thud(); await sleep(260); Sfx.clack(.9); await sleep(560);
       Sfx.pop(); out.classList.add('open'); await sleep(260);
-      u.show(pick, '扭到了！', 'win'); u.log(pick);
+      u.show(pick, '', 'win'); u.log(pick);
       if (rm.get()) { const arr = items.slice(); arr.splice(i, 1); list.set(arr); fill(); }
     });
     knob.onclick = run;
   } },
-{ id: 'lotto', name: '樂透', en: 'Lotto', cat: 'draw', color: '#4E9F80', hint: '一顆一顆開出來',
+{ id: 'lotto', name: '樂透', en: 'Lotto', cat: 'draw', color: '#4E9F80', desc: '設定號碼範圍，開出幾顆號碼',
   mount(u) {
     let balls = [], mixing = 0, r = 22, raf = 0;
     const maxN = numField(u.settings, { id: 'lotMax', label: '號碼從 1 到', def: 49, min: 5, max: 99, onchange: () => { if (!u.busy) fill(); } });
     const pickN = numField(u.settings, { id: 'lotPick', label: '開出幾顆', def: 6, min: 1, max: 10 });
     const sp = toggle(u.settings, { id: 'lotSp', label: '再加開一顆特別號', def: true });
-    const box = h('<div class="lotto"><canvas class="drum" width="560" height="560" aria-label="樂透開獎機"></canvas><div class="tray"><span class="tray-empty">開出來的球會排在這裡</span></div></div>'); u.stage.append(box);
+    const box = h('<div class="lotto"><canvas class="drum" width="560" height="560" aria-label="樂透開獎機"></canvas><div class="tray"></div></div>'); u.stage.append(box);
     const cv = box.querySelector('canvas'), ctx = cv.getContext('2d'), tray = box.querySelector('.tray');
     const C = 280, RR = 262;
     const colOf = n => PAL[Math.floor((n - 1) / 10) % PAL.length];
@@ -828,11 +859,11 @@ const TOOLS = [
       if (sp.get()) { await sleep(400); Sfx.drumroll(.9); await sleep(reduced ? 100 : 950); spn = balls.splice(rnd(balls.length), 1)[0].n; addBall(spn, true, k); }
       mixing = 0; await sleep(400);
       const sorted = got.slice().sort((a, b) => a - b);
-      u.show(sorted.join('  '), spn != null ? `特別號 ${spn}` : '由小到大排列', 'win');
+      u.show(sorted.join('  '), spn != null ? `特別號 ${spn}` : '', 'win');
       u.log(sorted.join(' ') + (spn != null ? `　特別號 ${spn}` : ''));
     });
   } },
-{ id: 'garagara', name: '彩球機', en: 'Prize Drum', cat: 'draw', color: '#D6A83A', ink: '#2A2F36', hint: '轉一圈掉一顆球，金色是頭獎',
+{ id: 'garagara', name: '彩球機', en: 'Prize Drum', cat: 'draw', color: '#D6A83A', ink: '#2A2F36', desc: '設定獎項和球數，轉一圈掉一顆',
   mount(u) {
     const TIERS = [['金', '#D6A83A'], ['紅', '#DF6448'], ['藍', '#5A97C4'], ['綠', '#4E9F80'], ['白', '#F1F0EA']];
     const DEFP = [['頭獎', 1], ['二獎', 3], ['三獎', 6], ['四獎', 10], ['參加獎', 30]].map(([name, count]) => ({ name, count }));
@@ -849,7 +880,7 @@ const TOOLS = [
     });
     function paintLeft() { prizes.forEach((p, i) => { $('#gg-l-' + i).textContent = `剩 ${left[i]}`; }); $('#ggTotal').textContent = `機器裡還有 ${left.reduce((a, b) => a + b, 0)} 顆球`; }
     paintLeft();
-    sbtn(u.settings, '重新裝球', () => { if (u.busy) return; left = prizes.map(p => p.count); save(); paintLeft(); tray = []; draw(); u.msg('球都裝回去了'); });
+    sbtn(u.settings, '重新裝球', () => { if (u.busy) return; left = prizes.map(p => p.count); save(); paintLeft(); tray = []; draw(); u.msg('已重新裝球'); });
     const cv = h('<canvas class="gg-cv" width="720" height="600" aria-label="彩球機"></canvas>'); u.stage.append(cv);
     const ctx = cv.getContext('2d');
     let ang = 0, ball = null, tray = [], raf = 0;
@@ -904,13 +935,13 @@ const TOOLS = [
       left[i]--; save(); paintLeft();
       Sfx.clack(1.3); await dropBall(TIERS[i][1]);
       const name = prizes[i].name, sub = `${TIERS[i][0]}球`;
-      if (i === 0) { Sfx.bell(); u.show(name, sub + ' · 恭喜！', 'big'); }
+      if (i === 0) { Sfx.bell(); u.show(name, sub, 'big'); }
       else if (i === 1) u.show(name, sub, 'win');
       else u.show(name, sub, 'plain');
       u.log(`${name}（${sub}）`);
     });
   } },
-{ id: 'ghostleg', name: '爬格子', en: 'Ghost Leg', cat: 'draw', color: '#3F8C9A', hint: '點上面的名字，一個一個爬下來',
+{ id: 'ghostleg', name: '爬格子', en: 'Ghost Leg', cat: 'draw', color: '#3F8C9A', desc: '設定參加者和結果，沿著梯子走到底',
   mount(u) {
     u.stage.classList.add('wide');
     const names = listField(u.settings, { id: 'glNames', label: '上面：參加者（最多 12 位）', def: DEF.glNames, rows: 5 });
@@ -982,16 +1013,16 @@ const TOOLS = [
     u.go('全部揭曉', async () => {
       if (n < 2) { u.msg('至少要兩位參加者'); return; }
       for (let i = 0; i < n; i++) { if (!traced.has(i)) { await trace(i, true); await sleep(160); } }
-      u.show('全部揭曉', `${n} 位都有結果了`, 'win');
+      u.show('全部揭曉', '', 'win');
     });
   } },
-{ id: 'slot', name: '拉霸機', en: 'Slot Machine', cat: 'slot', color: '#C25A6E', hint: '三個一樣就是大獎',
+{ id: 'slot', name: '拉霸機', en: 'Slot Machine', cat: 'slot', color: '#C25A6E', desc: '三個一樣就中獎',
   mount(u) {
     const SYM = [{ k: '7', c: '#DF6448' }, { k: 'BAR', c: '#2A2F36' }, { k: '★', c: '#E0A030' }, { k: '◆', c: '#4A87B8' }, { k: '♥', c: '#DA7890' }, { k: '♣', c: '#3F9476' }];
     const boost = toggle(u.settings, { id: 'slotBoost', label: '派對模式（提高中獎機率）', def: false });
     const stats = h('<p class="note"></p>'); u.settings.append(stats);
     let spins = store.get('slot:spins', 0), wins = store.get('slot:wins', 0);
-    const paintStats = () => { stats.textContent = `已拉 ${spins} 次，大獎 ${wins} 次。三個一樣的機率：一般 1/36，派對模式約 1/3。`; };
+    const paintStats = () => { stats.textContent = `已拉 ${spins} 次，大獎 ${wins} 次`; };
     paintStats();
     sbtn(u.settings, '次數歸零', () => { spins = wins = 0; store.set('slot:spins', 0); store.set('slot:wins', 0); paintStats(); });
     const m = h('<div class="slotm"><div class="cab"><div class="cab-top">★ LUCKY 7 ★</div><div class="reels"></div></div><button class="lever" type="button" aria-label="拉下拉桿"><span class="stick"></span><span class="knobball"></span></button></div>');
@@ -1013,7 +1044,7 @@ const TOOLS = [
     });
     lever.onclick = run;
   } },
-{ id: 'textslot', name: '文字拉霸', en: 'Text Slot', cat: 'slot', color: '#4E9F80', hint: '每一欄各抽一個，拼成一句話',
+{ id: 'textslot', name: '文字拉霸', en: 'Text Slot', cat: 'slot', color: '#4E9F80', desc: '每一欄各抽一個，組成一句話',
   mount(u) {
     const cols = [listField(u.settings, { id: 'ts1', label: '第 1 欄', def: DEF.ts1, rows: 4 }), listField(u.settings, { id: 'ts2', label: '第 2 欄', def: DEF.ts2, rows: 4 }), listField(u.settings, { id: 'ts3', label: '第 3 欄（不用可以清空）', def: DEF.ts3, rows: 4 })];
     const m = h('<div class="tslot"><div class="cab" style="--tc:#4E9F80"><div class="cab-top">WORD SLOT</div><div class="reels text"></div></div></div>'); u.stage.append(m);
@@ -1037,15 +1068,11 @@ function renderHome() {
   document.title = '抽籤遊樂場';
   const cat = store.get('homeCat', 'all');
   view.innerHTML = `
-    <section class="intro">
-      <h1>今天用哪一種抽？</h1>
-      <p>${TOOLS.length} 種抽法，每一種都有自己的聲音。右上角可以調音量或靜音；你輸入的名單只會存在這台電腦的瀏覽器裡。</p>
-    </section>
+    <h1 class="sr">抽籤遊樂場</h1>
     <div class="chips" role="toolbar" aria-label="分類">${[['all', '全部'], ...Object.entries(CATS)].map(([k, l]) => `<button type="button" data-c="${k}" aria-pressed="${k === cat}">${l}</button>`).join('')}</div>
     <div class="grid">${TOOLS.map(t => `<button type="button" class="card" data-id="${t.id}" data-cat="${t.cat}" style="--tc:${t.color}"${cat !== 'all' && cat !== t.cat ? ' hidden' : ''}>
       <span class="art">${ICON[t.id](t.color)}</span>${t.isNew ? '<span class="new">新</span>' : ''}<span class="tag">${CATS[t.cat]}</span>
-      <span class="nm">${t.name}</span><span class="en">${t.en}</span></button>`).join('')}</div>
-    <p class="foot">所有聲音都是即時用程式合成的，第一次按下按鈕後才會出聲。按空白鍵也可以開始。</p>`;
+      <span class="nm">${t.name}</span><span class="desc">${t.desc}</span></button>`).join('')}</div>`;
   view.querySelectorAll('.chips button').forEach(b => b.onclick = () => {
     Sfx.click(); store.set('homeCat', b.dataset.c);
     view.querySelectorAll('.chips button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
@@ -1062,7 +1089,7 @@ function openTool(t) {
     <div class="toolbody">
       <div class="stagecard">
         <div class="stage"></div>
-        <div class="result" aria-live="polite"><span class="r-hint">${t.hint || '按下按鈕開始'}</span></div>
+        <div class="result" aria-live="polite"></div>
         <div class="actions"></div>
       </div>
       <aside class="panel">
