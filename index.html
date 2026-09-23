@@ -80,6 +80,15 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 .brand .bz{font-family:var(--f-display);font-size:16px;color:var(--muted);margin-left:2px}
 .foot a{color:var(--ink);text-decoration:none;font-weight:500}
 .foot a:hover{text-decoration:underline}
+@media (pointer:fine){html.paw,html.paw *{cursor:none!important}html.paw input[type=text],html.paw input[type=number],html.paw textarea{cursor:text!important}}
+#paw{position:fixed;left:0;top:0;width:44px;height:56px;pointer-events:none;z-index:100;opacity:0;transition:opacity .15s;will-change:transform}
+#paw.on{opacity:1}
+#paw .pi{width:44px;height:56px;transform-origin:22px 5px;transform:rotate(-14deg);transition:transform .14s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+#paw svg{display:block}
+#paw .fist{display:none}
+#paw.down .open{display:none}
+#paw.down .fist{display:block}
+#paw.down .pi{transform:rotate(-14deg) scale(.92)}
 .card .desc{font-size:13px;color:var(--muted);padding-inline:4px;line-height:1.45}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .chips{margin-top:24px!important}
@@ -303,6 +312,7 @@ textarea{resize:vertical;line-height:1.5}
 <main id="view" class="wrapx"></main>
 <footer class="foot wrapx">© 2026 <a href="https://www.youtube.com/channel/UCltqZGFhSMw7h0wMFXiG0Ow" target="_blank" rel="noopener">小小黑開箱 ▸</a> × Heylongmaru. All Rights Reserved</footer>
 <canvas id="fx" aria-hidden="true"></canvas>
+<div id="paw" aria-hidden="true"><div class="pi"><svg class="open" viewBox="0 0 60 76" width="44" height="56"><g stroke="#3A3F46" stroke-width="5" stroke-linejoin="round"><rect x="19" y="46" width="22" height="22" rx="9"/><ellipse cx="30" cy="41" rx="17.5" ry="15"/><circle cx="11.5" cy="27" r="7.2"/><circle cx="22.5" cy="14.5" r="7.8"/><circle cx="37.5" cy="14.5" r="7.8"/><circle cx="48.5" cy="27" r="7.2"/></g><g fill="#FFFAF3"><rect x="19" y="46" width="22" height="22" rx="9"/><ellipse cx="30" cy="41" rx="17.5" ry="15"/><circle cx="11.5" cy="27" r="7.2"/><circle cx="22.5" cy="14.5" r="7.8"/><circle cx="37.5" cy="14.5" r="7.8"/><circle cx="48.5" cy="27" r="7.2"/></g><path d="M30 35.5 c4.6 0 9.8 4.4 10.3 9.2 c.3 3.2-2 5.2-4.4 4.6 c-1.7 1.8-3.8 2.5-5.9 2.5 s-4.2-.7-5.9-2.5 c-2.4.6-4.7-1.4-4.4-4.6 C20.2 39.9 25.4 35.5 30 35.5z" fill="#F4A3B6"/><g fill="#F4A3B6"><ellipse cx="12" cy="28" rx="3.6" ry="4.1"/><ellipse cx="22.8" cy="15.5" rx="3.8" ry="4.4"/><ellipse cx="37.2" cy="15.5" rx="3.8" ry="4.4"/><ellipse cx="48" cy="28" rx="3.6" ry="4.1"/></g></svg><svg class="fist" viewBox="0 0 60 76" width="44" height="56"><g stroke="#3A3F46" stroke-width="5" stroke-linejoin="round"><rect x="19" y="46" width="22" height="22" rx="9"/><ellipse cx="30" cy="42" rx="17.5" ry="14"/><circle cx="16" cy="33" r="7"/><circle cx="25" cy="28.5" r="7.2"/><circle cx="35" cy="28.5" r="7.2"/><circle cx="44" cy="33" r="7"/></g><g fill="#FFFAF3"><rect x="19" y="46" width="22" height="22" rx="9"/><ellipse cx="30" cy="42" rx="17.5" ry="14"/><circle cx="16" cy="33" r="7"/><circle cx="25" cy="28.5" r="7.2"/><circle cx="35" cy="28.5" r="7.2"/><circle cx="44" cy="33" r="7"/></g><g fill="none" stroke="#3A3F46" stroke-width="2" stroke-linecap="round"><path d="M20.5 36.5 q.8 3 -.2 5.5"/><path d="M30 33.5 q.8 3.5 0 6.5"/><path d="M39.5 36.5 q-.8 3 .2 5.5"/></g></svg></div></div>
 
 <script>
 (() => {
@@ -1158,6 +1168,21 @@ document.addEventListener('keydown', e => {
   e.preventDefault(); current.trigger();
 });
 document.addEventListener('pointerdown', () => Sfx.unlock(), { once: true });
+
+/* cat paw cursor */
+if (matchMedia('(pointer:fine)').matches) {
+  const paw = $('#paw'); document.documentElement.classList.add('paw');
+  addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    paw.style.transform = `translate(${e.clientX - 22}px,${e.clientY - 5}px)`;
+    const t = e.target, typing = t && t.closest && t.closest('input[type=text],input[type=number],textarea');
+    paw.classList.toggle('on', !typing);
+  }, { passive: true });
+  addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') paw.classList.add('down'); });
+  addEventListener('pointerup', () => paw.classList.remove('down'));
+  document.addEventListener('mouseout', e => { if (!e.relatedTarget) paw.classList.remove('on', 'down'); });
+  addEventListener('blur', () => paw.classList.remove('on', 'down'));
+}
 
 route();
 })();
